@@ -36,25 +36,32 @@ public class AnterosGeneratorManager {
 		JavaProjectBuilder builder = getBuilder(config.getSourcesToScanEntities());
 		Configuration configuration = new Configuration();
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
-		FileUtils.forceMkdir(new File(config.getPackageDirectory()));		
+		FileUtils.forceMkdir(new File(config.getPackageDirectory()));
 		config.setConfiguration(configuration);
 
 		for (JavaSource j : builder.getSources()) {
 			List<JavaClass> classes = j.getClasses();
 			for (JavaClass jc : classes) {
 				if (isGenerateForClass(jc, config.getPackageBaseList()) && isContainsAnnotation(jc, Entity.class)) {
-					config.setClazz(jc);	
+					config.setClazz(jc);
 					if (config.isIncludeSecurity()) {
-						AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
-						AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
+						if (config.isGenerateService()) {
+							AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
+						}
+						if (config.isGenerateController()) {
+							AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
+						}
 						if (config.isGenerateRepository()) {
 							AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
 						}
 						if (config.isGenerateJavaConfiguration()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION).generate(config);
+							AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION)
+									.generate(config);
 						}
 					} else {
-						AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
+						if (config.isGenerateService()) {
+							AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
+						}
 						if (config.isGenerateJavaConfiguration()) {
 							AnterosGenerator.create(AnterosGenerator.GENERATION_CONFIGURATION).generate(config);
 						}

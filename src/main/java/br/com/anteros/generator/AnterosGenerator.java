@@ -5,6 +5,7 @@ import br.com.anteros.generator.config.strategy.GenerationConfigurationStrategy;
 import br.com.anteros.generator.config.strategy.GenerationControllerStrategy;
 import br.com.anteros.generator.config.strategy.GenerationRepositoryStrategy;
 import br.com.anteros.generator.config.strategy.GenerationSecurityConfigurationStrategy;
+import br.com.anteros.generator.config.strategy.GenerationSecurityServiceStrategy;
 import br.com.anteros.generator.config.strategy.GenerationServiceStrategy;
 
 public class AnterosGenerator {
@@ -38,7 +39,7 @@ public class AnterosGenerator {
 			generator.strategy = new GenerationConfigurationStrategy();
 			break;
 		case GENERATION_SECURITY_SERVICE:
-			generator.strategy = new GenerationServiceStrategy();
+			generator.strategy = new GenerationSecurityServiceStrategy();
 			break;
 		case GENERATION_SECURITY_CONFIGURATION:
 			generator.strategy = new GenerationSecurityConfigurationStrategy();
