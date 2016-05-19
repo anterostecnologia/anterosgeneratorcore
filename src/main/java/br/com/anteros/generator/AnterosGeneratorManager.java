@@ -3,15 +3,22 @@ package br.com.anteros.generator;
 import static br.com.anteros.generator.AnterosGenerationConstants.TEMPLATES;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaAnnotation;
+import com.thoughtworks.qdox.library.ClassLibraryBuilder;
+import com.thoughtworks.qdox.library.SortedClassLibraryBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
 
+import br.com.anteros.core.scanner.ClassFilter;
+import br.com.anteros.core.scanner.ClassPathScanner;
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import br.com.anteros.generator.freemarker.AnterosFreeMarkerTemplateLoader;
 import br.com.anteros.persistence.metadata.annotation.Entity;
@@ -33,74 +40,59 @@ public class AnterosGeneratorManager {
 	}
 
 	public void generate(AnterosGenerationConfig config, Class<?> baseClassLoader) throws Exception {
-		JavaProjectBuilder builder = getBuilder(config.getSourcesToScanEntities());
+		List<JavaClass> allEntityClasses = getAllEntityClasses(config.getPackageScanEntity(),
+				config.getClassPathURLs());
 		Configuration configuration = new Configuration();
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
 		FileUtils.forceMkdir(new File(config.getPackageDirectory()));
 		config.setConfiguration(configuration);
 
-		for (JavaSource j : builder.getSources()) {
-			List<JavaClass> classes = j.getClasses();
-			for (JavaClass jc : classes) {
-				if (isGenerateForClass(jc, config.getPackageBaseList()) && isContainsAnnotation(jc, Entity.class)) {
-					config.setClazz(jc);
-					if (config.isIncludeSecurity()) {
-						if (config.isGenerateService()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
-						}
-						if (config.isGenerateController()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
-						}
-						if (config.isGenerateRepository()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
-						}
-						if (config.isGenerateJavaConfiguration()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION)
-									.generate(config);
-						}
-					} else {
-						if (config.isGenerateService()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
-						}
-						if (config.isGenerateJavaConfiguration()) {
-							AnterosGenerator.create(AnterosGenerator.GENERATION_CONFIGURATION).generate(config);
-						}
-					}
+		for (JavaClass jc : allEntityClasses) {
+			config.getGenerationLog().log(jc.getName());
+			config.setClazz(jc);
+			if (config.isIncludeSecurity()) {
+				if (config.isGenerateService()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
+				}
+				if (config.isGenerateController()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
+				}
+				if (config.isGenerateRepository()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
+				}
+				if (config.isGenerateJavaConfiguration()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION).generate(config);
+				}
+			} else {
+				if (config.isGenerateService()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
+				}
+				if (config.isGenerateJavaConfiguration()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_CONFIGURATION).generate(config);
 				}
 			}
 		}
 	}
 
-	private boolean isContainsAnnotation(JavaClass jc, Class<?> ac) {
-		for (JavaAnnotation ja : jc.getAnnotations()) {
-			if (ja.getType().toString().equals(ac.getName())) {
-				return true;
-			}
+	private List<JavaClass> getAllEntityClasses(String sourcesToScanEntities, List<URL> urls) throws IOException {
+		List<JavaClass> result = new ArrayList<JavaClass>();
+		URLClassLoader urlClassLoader = new URLClassLoader(urls.toArray(new URL[] {}),
+				Thread.currentThread().getContextClassLoader());
+		
+		Thread.currentThread().setContextClassLoader(urlClassLoader);
+		ClassLibraryBuilder libraryBuilder = new SortedClassLibraryBuilder();
+		libraryBuilder.appendClassLoader(urlClassLoader);
+		JavaProjectBuilder docBuilder = new JavaProjectBuilder(libraryBuilder);
+
+		String[] packages = StringUtils.tokenizeToStringArray(sourcesToScanEntities, ", ;");
+		List<Class<?>> scanClasses = ClassPathScanner
+				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
+
+		for (Class<?> cl : scanClasses) {
+			JavaClass javaClass = docBuilder.getClassByName(cl.getName());
+			if (javaClass != null)
+				result.add(javaClass);
 		}
-		return false;
+		return result;
 	}
-
-	private JavaProjectBuilder getBuilder(List<String> sourcesToScanEntities) {
-		JavaProjectBuilder docBuilder = new JavaProjectBuilder();
-		for (String r : sourcesToScanEntities) {
-			docBuilder.addSourceTree(new File(r));
-		}
-
-		return docBuilder;
-	}
-
-	private boolean isGenerateForClass(JavaClass sourceJavaClass, List<String> packageBaseList) {
-		String classPackage = sourceJavaClass.getPackageName();
-		if (packageBaseList != null) {
-			for (String source : packageBaseList) {
-				if (classPackage.startsWith(source)) {
-					return true;
-				}
-			}
-			return false;
-		} else {
-			return true;
-		}
-	}
-
 }

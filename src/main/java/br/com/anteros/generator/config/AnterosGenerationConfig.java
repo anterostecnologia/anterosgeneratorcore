@@ -1,5 +1,6 @@
 package br.com.anteros.generator.config;
 
+import java.net.URL;
 import java.util.List;
 
 import com.thoughtworks.qdox.model.JavaClass;
@@ -51,11 +52,7 @@ public interface AnterosGenerationConfig {
 
 	public String getSourceDestination();
 
-	public List<String> getSourcesToScanEntities();
-
 	public boolean isIncludeSecurity();
-
-	public List<String> getPackageBaseList();
 
 	public boolean isGenerateRepository();
 
@@ -68,5 +65,7 @@ public interface AnterosGenerationConfig {
 	public void setConfiguration(Configuration configuration);
 	
 	public void setClazz(JavaClass clazz);
+	
+	public List<URL> getClassPathURLs();
 
 }
