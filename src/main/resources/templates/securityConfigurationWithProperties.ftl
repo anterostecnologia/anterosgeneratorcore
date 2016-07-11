@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
 import br.com.anteros.security.spring.config.AnterosSpringSecurityConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
 @PropertySource("${propertiesFile}")
@@ -50,6 +51,15 @@ public class SecurityConfiguration extends AnterosSpringSecurityConfiguration {
 	@Override
 	public String packageToScanSecurity() {
 		return packageToScanSecurity;
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/resources/**").permitAll()
+		                        .antMatchers("/login*").permitAll()
+				                .anyRequest().authenticated().and()
+	        .formLogin().and()
+	        .httpBasic();
 	}
 
 }
