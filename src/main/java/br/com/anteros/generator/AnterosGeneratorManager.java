@@ -4,6 +4,7 @@ import static br.com.anteros.generator.AnterosGenerationConstants.TEMPLATES;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class AnterosGeneratorManager {
 				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
 
 		for (Class<?> cl : scanClasses) {
-			if (!ReflectionUtils.isAbstractClass(cl)) {
+			if (!Modifier.isAbstract(cl.getModifiers())) {
 				JavaClass javaClass = docBuilder.getClassByName(cl.getName());
 				if (javaClass != null)
 					result.add(javaClass);
