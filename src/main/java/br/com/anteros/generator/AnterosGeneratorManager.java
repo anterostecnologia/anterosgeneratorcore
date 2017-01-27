@@ -18,6 +18,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 import br.com.anteros.core.scanner.ClassFilter;
 import br.com.anteros.core.scanner.ClassPathScanner;
+import br.com.anteros.core.utils.ReflectionUtils;
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import br.com.anteros.generator.freemarker.AnterosFreeMarkerTemplateLoader;
@@ -78,7 +79,7 @@ public class AnterosGeneratorManager {
 		List<JavaClass> result = new ArrayList<JavaClass>();
 		URLClassLoader urlClassLoader = new URLClassLoader(urls.toArray(new URL[] {}),
 				Thread.currentThread().getContextClassLoader());
-		
+
 		Thread.currentThread().setContextClassLoader(urlClassLoader);
 		ClassLibraryBuilder libraryBuilder = new SortedClassLibraryBuilder();
 		libraryBuilder.appendClassLoader(urlClassLoader);
@@ -89,9 +90,11 @@ public class AnterosGeneratorManager {
 				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
 
 		for (Class<?> cl : scanClasses) {
-			JavaClass javaClass = docBuilder.getClassByName(cl.getName());
-			if (javaClass != null)
-				result.add(javaClass);
+			if (!ReflectionUtils.isAbstractClass(cl)) {
+				JavaClass javaClass = docBuilder.getClassByName(cl.getName());
+				if (javaClass != null)
+					result.add(javaClass);
+			}
 		}
 		return result;
 	}
