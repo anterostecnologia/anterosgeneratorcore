@@ -67,6 +67,11 @@ public class SecurityMvcConfiguration extends AnterosSpringSecurityMvcConfigurat
 	public Class<?> globalMethodSecurityConfigurationClass() {
 		return GlobalMethodSecurityConfiguration.class;
 	}
+	
+	@Override
+	public void addServlet(ServletContext servletContext, AnnotationConfigWebApplicationContext appContext) {
+		
+	}
 
 
 }
