@@ -31,9 +31,13 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 	public SQLSessionFactoryConfiguration getSQLSessionFactoryConfiguration() {
 		return SQLSessionFactoryConfiguration.create()
 				.packageScanEntity(new PackageScanEntity("${packageScanEntity}"))
-				.ddlOutputMode(getDdlOutputMode()).dialect(getDialect()).formatSql(getFormatSql())
+				.ddlOutputMode(getDDLOutputMode()).dialect(getDialect()).formatSql(getFormatSql())
+				.applicationLocation(getApplicationLocation())
+				.createTablesFileName(getCreateTablesFileName())
+				.dropTablesFileName(getDropTablesFileName())
 				.includeSecurityModel(true).jdbcSchema(getDefaultSchema()).showSql(getShowSql())
-				.databaseDdlGeneration(getDatabaseDdlGeneration());
+				.databaseDDLGeneration(getDatabaseDDLGeneration())
+				.scriptDDLGeneration(getScriptDDLGeneration());
 	}
 
 
@@ -51,6 +55,18 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 
 	public String getPassword() {
 		return "** INFORME AQUI A SENHA DE CONEXÃO **";
+	}
+	
+	public String getApplicationLocation() {
+	    return "";
+	}
+	
+	public String getCreateTablesFileName() {
+	    return "";
+	}
+	
+	public String getDropTablesFileName() {
+	    return "";
 	}
 
 	public int getAcquireIncrement() {
@@ -93,11 +109,15 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 		return "";
 	}
 
-	public String getDatabaseDdlGeneration() {
+	public String getDatabaseDDLGeneration() {
+		return AnterosPersistenceProperties.CREATE_OR_EXTEND;
+	}
+	
+	public String getScriptDDLGeneration() {
 		return AnterosPersistenceProperties.CREATE_OR_EXTEND;
 	}
 
-	public String getDdlOutputMode() {
+	public String getDDLOutputMode() {
 		return AnterosPersistenceProperties.DDL_DATABASE_OUTPUT;
 	}
 	

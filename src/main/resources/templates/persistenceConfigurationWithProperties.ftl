@@ -58,10 +58,22 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 	private String defaultSchema = "";
 
 	@Value("&&{anteros.database.ddl.generation}&&")
-	private String databaseDdlGeneration = "none";
+	private String databaseDDLGeneration = "none";
+	
+	@Value("&&{anteros.script.ddl.generation}&&")
+	private String scriptDDLGeneration = "none";
 
 	@Value("&&{anteros.ddl.output.mode}&&")
 	private String ddlOutputMode = "none";
+	
+	@Value("&&{anteros.ddl.application.location}&&")
+	private String applicationLocation = "";
+	
+	@Value("&&{anteros.ddl.createtables.filename}&&")
+	private String createTablesFileName = "";
+	
+	@Value("&&{anteros.ddl.droptables.filename}&&")
+	private String dropTablesFileName = "";
 	
 	@Override
 	public PooledDataSourceConfiguration getPooledDataSourceConfiguration() {
@@ -82,8 +94,12 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 		return SQLSessionFactoryConfiguration.create()
 				.packageScanEntity(new PackageScanEntity("${packageScanEntity}"))
 				.ddlOutputMode(ddlOutputMode).dialect(dialect).formatSql(Boolean.valueOf(formatSql))
+				.applicationLocation(applicationLocation)
+				.createTablesFileName(createTablesFileName)
+				.dropTablesFileName(dropTablesFileName)
 				.includeSecurityModel(true).jdbcSchema(defaultSchema).showSql(ShowSQLType.parse(showSql))
-				.databaseDdlGeneration(databaseDdlGeneration);
+				.databaseDDLGeneration(databaseDDLGeneration)
+				.scriptDDLGeneration(scriptDDLGeneration);
 	}
 
 
