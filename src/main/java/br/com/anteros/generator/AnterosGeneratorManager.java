@@ -42,8 +42,8 @@ public class AnterosGeneratorManager {
 	}
 
 	public void generate(AnterosGenerationConfig config, Class<?> baseClassLoader) throws Exception {
-		List<JavaClass> allEntityClasses = getAllEntityClasses(config.getPackageScanEntity(),
-				config.getClassPathURLs());
+		List<JavaClass> allEntityClasses = getAllEntityClasses(config.isGenerateForAbstractClass(),
+				config.getPackageScanEntity(), config.getClassPathURLs());
 		Configuration configuration = new Configuration();
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
 		FileUtils.forceMkdir(new File(config.getPackageDirectory()));
@@ -76,7 +76,8 @@ public class AnterosGeneratorManager {
 		}
 	}
 
-	private List<JavaClass> getAllEntityClasses(String sourcesToScanEntities, List<URL> urls) throws IOException {
+	private List<JavaClass> getAllEntityClasses(boolean generateForAbstractClass, String sourcesToScanEntities,
+			List<URL> urls) throws IOException {
 		List<JavaClass> result = new ArrayList<JavaClass>();
 		URLClassLoader urlClassLoader = new URLClassLoader(urls.toArray(new URL[] {}),
 				Thread.currentThread().getContextClassLoader());
@@ -91,11 +92,12 @@ public class AnterosGeneratorManager {
 				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
 
 		for (Class<?> cl : scanClasses) {
-			if (!Modifier.isAbstract(cl.getModifiers())) {
-				JavaClass javaClass = docBuilder.getClassByName(cl.getName());
-				if (javaClass != null)
-					result.add(javaClass);
+			if (Modifier.isAbstract(cl.getModifiers()) && !generateForAbstractClass) {
+				continue;
 			}
+			JavaClass javaClass = docBuilder.getClassByName(cl.getName());
+			if (javaClass != null)
+				result.add(javaClass);
 		}
 		return result;
 	}

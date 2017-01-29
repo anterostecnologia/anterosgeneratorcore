@@ -62,6 +62,8 @@ public interface AnterosGenerationConfig {
 	
 	public boolean isGenerateController();
 	
+	public boolean isGenerateForAbstractClass();
+	
 	public void setConfiguration(Configuration configuration);
 	
 	public void setClazz(JavaClass clazz);
