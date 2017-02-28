@@ -1,16 +1,9 @@
 package br.com.anteros.generator.config.strategy;
 
-import static br.com.anteros.generator.AnterosGenerationConstants.BASE_PATH_API;
-import static br.com.anteros.generator.AnterosGenerationConstants.CONTACT_NAME;
-import static br.com.anteros.generator.AnterosGenerationConstants.DESCRIPTION_API;
 import static br.com.anteros.generator.AnterosGenerationConstants.GLOBAL_METHOD_SECURITY_CONFIGURATION_TEMPLATE;
-import static br.com.anteros.generator.AnterosGenerationConstants.LICENSE_API;
-import static br.com.anteros.generator.AnterosGenerationConstants.LICENSE_URL_API;
-import static br.com.anteros.generator.AnterosGenerationConstants.NULL;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_SCAN_COMPONENTS;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_SCAN_ENTITY;
-import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_TO_SCAN_JSON_DOC;
 import static br.com.anteros.generator.AnterosGenerationConstants.PERSISTENCE_CONFIGURATION_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.PERSISTENCE_CONFIGURATION_WITH_PROPERTIES_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.PROJECT_DISPLAY_NAME;
@@ -18,9 +11,6 @@ import static br.com.anteros.generator.AnterosGenerationConstants.PROPERTIES_FIL
 import static br.com.anteros.generator.AnterosGenerationConstants.SECURITY_CONFIGURATION_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.SECURITY_CONFIGURATION_WITH_PROPERTIES_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.SECURITY_MVC_CONFIGURATION_TEMPLATE;
-import static br.com.anteros.generator.AnterosGenerationConstants.TERMS_OF_SERVICE_URL;
-import static br.com.anteros.generator.AnterosGenerationConstants.TITLE_API;
-import static br.com.anteros.generator.AnterosGenerationConstants.VERSION_API;
 
 import java.io.File;
 import java.util.HashMap;

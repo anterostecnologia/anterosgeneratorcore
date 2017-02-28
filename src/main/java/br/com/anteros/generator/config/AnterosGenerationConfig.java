@@ -40,10 +40,6 @@ public interface AnterosGenerationConfig {
 
 	public String getLicenseUrl();
 
-	public List<String> getPackageScanJSONDocList();
-
-	public String getBasePathJSONDoc();
-
 	public List<String> getPackageScanComponentsList();
 
 	public String getSourceDestination();
