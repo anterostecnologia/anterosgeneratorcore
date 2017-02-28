@@ -22,10 +22,6 @@ public interface AnterosGenerationConfig {
 
 	public String getProjectDisplayName();
 
-	public boolean isGenerateSwaggerConfiguration();
-
-	public boolean isGenerateJSONDocConfiguration();
-
 	public String getPropertiesFile();
 
 	public String getPackageScanEntity();

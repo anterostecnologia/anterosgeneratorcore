@@ -4,10 +4,6 @@ public class AnterosGenerationConstants {
 
 	public static final String MVC_CONFIGURATION_TEMPLATE = "mvcConfiguration.ftl";
 
-	public static final String IMPORT_SWAGGER = "importSwagger";
-
-	public static final String IMPORT_JSON_DOC = "importJSONDoc";
-
 	public static final String BASE_PATH_API = "basePathApi";
 
 	public static final String PACKAGE_TO_SCAN_JSON_DOC = "packageToScanJsonDoc";
@@ -30,19 +26,11 @@ public class AnterosGenerationConstants {
 
 	public static final String REST_CONTROLLER_TEMPLATE = "restController.ftl";
 
-	public static final String JSON_DOC_CONFIGURATION_TEMPLATE = "jsonDocConfiguration.ftl";
-
-	public static final String SWAGGER_CONFIGURATION_TEMPLATE = "swaggerConfiguration.ftl";
-
 	public static final String SECURITY_CONFIGURATION_TEMPLATE = "securityConfiguration.ftl";
 
 	public static final String SECURITY_CONFIGURATION_WITH_PROPERTIES_TEMPLATE = "securityConfigurationWithProperties.ftl";
 
 	public static final String NULL = "null";
-
-	public static final String JSON_DOC_CONFIGURATION_CLASS = "jsonDocConfigurationClass";
-
-	public static final String SWAGGER_CONFIGURATION_CLASS = "swaggerConfigurationClass";
 
 	public static final String PROJECT_DISPLAY_NAME = "projectDisplayName";
 

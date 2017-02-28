@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import br.com.anteros.springWeb.config.AnterosSpringMvcConfiguration;
 
-${importJSONDoc}
-${importSwagger}
 import ${packageName}.PersistenceConfiguration;
 
 
@@ -27,16 +25,6 @@ public class MvcConfiguration extends AnterosSpringMvcConfiguration {
 	@Override
 	public Class<?> mvcConfigurationClass() {
 		return this.getClass();
-	}
-
-	@Override
-	public Class<?> swaggerConfigurationClass() {
-		return ${swaggerConfigurationClass};
-	}
-
-	@Override
-	public Class<?> jsonDocConfigurationClass() {
-		return ${jsonDocConfigurationClass};
 	}
 	
 	@Override

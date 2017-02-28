@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.WebApplicationInitializer;
 
-${importJSONDoc}
-${importSwagger}
 
 import br.com.anteros.security.spring.config.AnterosSpringSecurityMvcConfiguration;
 
@@ -49,20 +47,12 @@ public class SecurityMvcConfiguration extends AnterosSpringSecurityMvcConfigurat
 		return this.getClass();
 	}
 
-	@Override
-	public Class<?> swaggerConfigurationClass() {
-		return ${swaggerConfigurationClass};
-	}
 
 	@Override
 	public Class<?> securityConfigurationClass() {
 		return SecurityConfiguration.class;
 	}
 
-	@Override
-	public Class<?> jsonDocConfigurationClass() {
-		return ${jsonDocConfigurationClass};
-	}
 
 	@Override
 	public Class<?> globalMethodSecurityConfigurationClass() {
