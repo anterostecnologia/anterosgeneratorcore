@@ -26,20 +26,6 @@ public interface AnterosGenerationConfig {
 
 	public String getPackageScanEntity();
 
-	public String getTitleAPI();
-
-	public String getDescriptionAPI();
-
-	public String getTermsOfServiceUrl();
-
-	public String getContactName();
-
-	public String getLicenseAPI();
-
-	public String getVersionAPI();
-
-	public String getLicenseUrl();
-
 	public List<String> getPackageScanComponentsList();
 
 	public String getSourceDestination();
