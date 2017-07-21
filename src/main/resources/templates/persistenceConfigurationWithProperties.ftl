@@ -75,6 +75,12 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 	@Value("&&{anteros.ddl.droptables.filename}&&")
 	private String dropTablesFileName = "";
 	
+	@Value("&&{anteros.lock.timeout}&&")
+	private Long lockTimeout = 0L;
+	
+	@Value("&&{anteros.use.bean.validation}&&")
+	private Boolean useBeanValidation = true;
+	
 	@Override
 	public PooledDataSourceConfiguration getPooledDataSourceConfiguration() {
 		return PooledDataSourceConfiguration.of(driverClass, jdbcUrl, user, password)
@@ -99,6 +105,7 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 				.dropTablesFileName(dropTablesFileName)
 				.includeSecurityModel(true).jdbcSchema(defaultSchema).showSql(ShowSQLType.parse(showSql))
 				.databaseDDLGeneration(databaseDDLGeneration)
+				.useBeanValidation(useBeanValidation)
 				.scriptDDLGeneration(scriptDDLGeneration);
 	}
 
