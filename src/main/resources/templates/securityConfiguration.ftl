@@ -38,9 +38,11 @@ public class SecurityConfiguration extends AnterosSpringSecurityConfiguration {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**").permitAll()
-		                        .antMatchers("/login*").permitAll()
-				                .anyRequest().authenticated().and()
-	        .formLogin().and()
-	        .httpBasic();
+		.antMatchers("/login*").permitAll()
+		.anyRequest().authenticated().and()
+		.formLogin().and()
+		.cors().and()
+		.csrf().disable()
+		.httpBasic();
 	}
 }

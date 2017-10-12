@@ -29,7 +29,8 @@ public class SecurityMvcConfiguration extends AnterosSpringSecurityMvcConfigurat
 
 	@Override
 	public void addListener(ServletContext servletContext) {
-		
+		servletContext.setInitParameter("log4jConfigLocation", "/WEB-INF/log4j.properties");
+		servletContext.addListener(org.springframework.web.util.Log4jConfigListener.class);
 	}
 
 	@Override

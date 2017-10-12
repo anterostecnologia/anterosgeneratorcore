@@ -19,7 +19,13 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 				.acquireIncrement(getAcquireIncrement()).initialPoolSize(getInitialPoolSize())
 				.maxPoolSize(getMaxPoolSize()).minPoolSize(getMinPoolSize())
 				.maxIdleTime(getMaxIdleTime())
-				.idleConnectionTestPeriod(Integer.valueOf(getIdleConnectionTestPeriod()));
+				.idleConnectionTestPeriod(Integer.valueOf(getIdleConnectionTestPeriod()))
+				.acquireRetryAttempts(getAcquireRetryAttempts())
+				.automaticTestTable(getAutomaticTestTable())
+				.maxConnectionAge(getMaxConnectionAge())
+				.preferredTestQuery(getPreferredTestQuery())
+				.testConnectionOnCheckin(getTestConnectionOnCheckin())
+				.testConnectionOnCheckout(getTestConnectionOnCheckout());	
 	}
 
 	@Override
@@ -92,6 +98,36 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 	public int getIdleConnectionTestPeriod() {
 		return 5000;
 	}
+	
+	
+	public String getPreferredTestQuery(){
+	   return "select 1;";
+	}
+	   
+    public boolean getTestConnectionOnCheckout(){
+       return true;
+    }
+
+    public boolean getTestConnectionOnCheckin(){
+       return true;
+    }
+
+    public int getMaxStatementsPerConnection(){
+        return 5;
+    }
+
+    public int getMaxConnectionAge(){
+       return 14400;
+    }
+    
+    public int getAcquireRetryAttempts(){
+       return 10;
+    }
+    
+    public String automaticTestTable(){
+       return "";
+    }
+	
 
 	public String getDialect() {
 		return "** INFORME AQUI O DIALETO DA PERSISTÊNCIA **";

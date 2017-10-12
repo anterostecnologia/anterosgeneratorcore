@@ -19,9 +19,11 @@ import br.com.anteros.springWeb.controller.AbstractSQLRestController;
 public class ${controller} extends AbstractSQLRestController<${entityType}, Long> {
 
 	@Autowired
+	@Lazy
 	private ${interfaceService} ${service};
 
 	@Autowired
+	@Lazy
 	protected AnterosSecurityService anterosSecurityService;
 
 	@Override

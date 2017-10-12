@@ -44,6 +44,24 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 
 	@Value("&&{c3p0.idleConnectionTestPeriod}&&")
 	private String idleConnectionTestPeriod = "10000";
+	
+	@Value("&&{c3p0.preferredTestQuery}&&")
+	private String preferredTestQuery;
+
+	@Value("&&{c3p0.testConnectionOnCheckout}&&")
+	private Boolean testConnectionOnCheckout;
+
+	@Value("&&{c3p0.testConnectionOnCheckin}&&")
+	private Boolean testConnectionOnCheckin;
+
+	@Value("&&{c3p0.maxConnectionAge}&&")
+	private Long maxConnectionAge;
+
+	@Value("&&{c3p0.acquireRetryAttempts}&&")
+	private Long acquireRetryAttempts;
+	
+	@Value("&&{c3p0.automaticTestTable}&&")
+	private String automaticTestTable;
 
 	@Value("&&{anteros.dialect}&&")
 	private String dialect;
@@ -87,7 +105,13 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 				.acquireIncrement(Integer.valueOf(acquireIncrement)).initialPoolSize(Integer.valueOf(initialPoolSize))
 				.maxPoolSize(Integer.valueOf(maxPoolSize)).minPoolSize(Integer.valueOf(minPoolSize))
 				.maxIdleTime(Integer.valueOf(maxIdleTime))
-				.idleConnectionTestPeriod(Integer.valueOf(idleConnectionTestPeriod));
+				.idleConnectionTestPeriod(Integer.valueOf(idleConnectionTestPeriod))
+				.acquireRetryAttempts(acquireRetryAttempts.intValue())
+				.automaticTestTable(automaticTestTable)
+				.maxConnectionAge(maxConnectionAge.intValue())
+				.preferredTestQuery(preferredTestQuery)
+				.testConnectionOnCheckin(testConnectionOnCheckin)
+				.testConnectionOnCheckout(testConnectionOnCheckout);	
 	}
 
 	@Override
