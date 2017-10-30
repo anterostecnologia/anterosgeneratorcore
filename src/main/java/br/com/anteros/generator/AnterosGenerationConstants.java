@@ -23,6 +23,8 @@ public class AnterosGenerationConstants {
 	public static final String REPOSITORY_INTERFACE_TEMPLATE = "repositoryInterface.ftl";
 
 	public static final String REST_CONTROLLER_TEMPLATE = "restController.ftl";
+	
+	public static final String EXCEPTION_HANDLER_TEMPLATE = "exceptionHandler.ftl";
 
 	public static final String SECURITY_CONFIGURATION_TEMPLATE = "securityConfiguration.ftl";
 

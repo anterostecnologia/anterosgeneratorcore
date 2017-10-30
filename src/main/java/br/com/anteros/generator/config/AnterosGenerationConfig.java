@@ -42,6 +42,8 @@ public interface AnterosGenerationConfig {
 	
 	public boolean isGenerateForAbstractClass();
 	
+	public boolean isGenerateExceptionHandler();
+	
 	public void setConfiguration(Configuration configuration);
 	
 	public void setClazz(JavaClass clazz);

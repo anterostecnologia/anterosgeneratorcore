@@ -3,6 +3,7 @@ package br.com.anteros.generator;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import br.com.anteros.generator.config.strategy.GenerationConfigurationStrategy;
 import br.com.anteros.generator.config.strategy.GenerationControllerStrategy;
+import br.com.anteros.generator.config.strategy.GenerationExceptionHandlerStrategy;
 import br.com.anteros.generator.config.strategy.GenerationRepositoryStrategy;
 import br.com.anteros.generator.config.strategy.GenerationSecurityConfigurationStrategy;
 import br.com.anteros.generator.config.strategy.GenerationSecurityServiceStrategy;
@@ -16,6 +17,7 @@ public class AnterosGenerator {
 	public final static int GENERATION_CONFIGURATION=3;
 	public final static int GENERATION_SECURITY_SERVICE=4;
 	public final static int GENERATION_SECURITY_CONFIGURATION=5;
+	public final static int GENERATION_EXCEPTION_HANDLER=6;	
 	
 	private AnterosGenerationStrategy strategy=null;
 	
@@ -43,6 +45,9 @@ public class AnterosGenerator {
 			break;
 		case GENERATION_SECURITY_CONFIGURATION:
 			generator.strategy = new GenerationSecurityConfigurationStrategy();
+			break;
+		case GENERATION_EXCEPTION_HANDLER:
+			generator.strategy = new GenerationExceptionHandlerStrategy();
 			break;
 		default:
 			throw new RuntimeException("Estratégia não encontrada.");

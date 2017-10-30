@@ -59,6 +59,9 @@ public class AnterosGeneratorManager {
 				if (config.isGenerateController()) {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
 				}
+				if (config.isGenerateExceptionHandler()) {
+					AnterosGenerator.create(AnterosGenerator.GENERATION_EXCEPTION_HANDLER).generate(config);
+				}
 				if (config.isGenerateRepository()) {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
 				}
