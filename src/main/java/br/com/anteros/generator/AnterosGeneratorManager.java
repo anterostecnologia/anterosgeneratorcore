@@ -19,7 +19,6 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 import br.com.anteros.core.scanner.ClassFilter;
 import br.com.anteros.core.scanner.ClassPathScanner;
-import br.com.anteros.core.utils.ReflectionUtils;
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import br.com.anteros.generator.freemarker.AnterosFreeMarkerTemplateLoader;
@@ -49,6 +48,27 @@ public class AnterosGeneratorManager {
 		FileUtils.forceMkdir(new File(config.getPackageDirectory()));
 		config.setConfiguration(configuration);
 
+		if (config.isIncludeSecurity()) {
+			if (config.isGenerateJavaConfiguration()) {
+				AnterosGenerator.create(AnterosGenerator.GENERATION_APP_CONFIGURATION).generate(config);
+				AnterosGenerator.create(AnterosGenerator.GENERATION_MVC_CONFIGURATION).generate(config);
+				AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE_PERSISTENCE_CONFIGURATION)
+						.generate(config);
+				AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION).generate(config);
+			}
+		} else {
+			if (config.isGenerateJavaConfiguration()) {
+				AnterosGenerator.create(AnterosGenerator.GENERATION_APP_CONFIGURATION).generate(config);
+				AnterosGenerator.create(AnterosGenerator.GENERATION_MVC_CONFIGURATION).generate(config);
+				AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE_PERSISTENCE_CONFIGURATION)
+						.generate(config);
+			}
+		}
+
+		if (config.isGenerateExceptionHandler()) {
+			AnterosGenerator.create(AnterosGenerator.GENERATION_EXCEPTION_HANDLER).generate(config);
+		}
+
 		for (JavaClass jc : allEntityClasses) {
 			config.getGenerationLog().log(jc.getName());
 			config.setClazz(jc);
@@ -57,23 +77,22 @@ public class AnterosGeneratorManager {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
 				}
 				if (config.isGenerateController()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_CONTROLLER).generate(config);
+					AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE).generate(config);
 				}
-				if (config.isGenerateExceptionHandler()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_EXCEPTION_HANDLER).generate(config);
-				}
+
 				if (config.isGenerateRepository()) {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
 				}
-				if (config.isGenerateJavaConfiguration()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_CONFIGURATION).generate(config);
-				}
+
 			} else {
 				if (config.isGenerateService()) {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
 				}
 				if (config.isGenerateJavaConfiguration()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_CONFIGURATION).generate(config);
+					AnterosGenerator.create(AnterosGenerator.GENERATION_APP_CONFIGURATION).generate(config);
+					AnterosGenerator.create(AnterosGenerator.GENERATION_MVC_CONFIGURATION).generate(config);
+					AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE_PERSISTENCE_CONFIGURATION)
+							.generate(config);
 				}
 			}
 		}

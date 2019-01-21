@@ -15,7 +15,7 @@ import br.com.anteros.validation.api.ConstraintViolation;
 import br.com.anteros.validation.api.ConstraintViolationException;
 
 @ControllerAdvice
-public class AnterosExceptionHandler {
+public class MvcExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleIllegalArgumentException(Exception ex) {

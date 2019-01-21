@@ -5,12 +5,17 @@ import static br.com.anteros.generator.AnterosGenerationConstants.ENTITY_TYPE;
 import static br.com.anteros.generator.AnterosGenerationConstants.IMPORT_ENTITY;
 import static br.com.anteros.generator.AnterosGenerationConstants.IMPORT_SERVICE;
 import static br.com.anteros.generator.AnterosGenerationConstants.INTERFACE_SERVICE;
+import static br.com.anteros.generator.AnterosGenerationConstants.NO_SQL;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.RESOURCE_DESCRIPTION;
 import static br.com.anteros.generator.AnterosGenerationConstants.RESOURCE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE;
+import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_INTERFACE_TEMPLATE;
+import static br.com.anteros.generator.AnterosGenerationConstants.SECURITY_SERVICE_INTERFACE_TEMPLATE;
+import static br.com.anteros.generator.AnterosGenerationConstants.SECURITY_SERVICE_IMPLEMENTATION_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_NAME_IMPL;
+import static br.com.anteros.generator.AnterosGenerationConstants.SQL;
 import static br.com.anteros.generator.AnterosGenerationConstants.TIME;
 
 import java.io.File;
@@ -35,7 +40,15 @@ public class GenerationSecurityServiceStrategy implements AnterosGenerationStrat
 		config.getGenerationLog().log("Generating class security service interface for " + config.getClazz().getName());
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE));
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE + File.separatorChar + "impl"));
-		Template templateServiceInterface = config.getConfiguration().getTemplate("securityServiceInterface.ftl");
+
+		Template templateServiceInterface = null;
+		if (SQL.equals(config.getPersistenceDatabase())) {
+			templateServiceInterface = config.getConfiguration()
+					.getTemplate(SQL + File.separatorChar + SECURITY_SERVICE_INTERFACE_TEMPLATE);
+		} else {
+			templateServiceInterface = config.getConfiguration()
+					.getTemplate(NO_SQL + File.separatorChar + SECURITY_SERVICE_INTERFACE_TEMPLATE);
+		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY_HH_MM_SS);
 
@@ -61,7 +74,15 @@ public class GenerationSecurityServiceStrategy implements AnterosGenerationStrat
 			out.close();
 		}
 
-		Template templateServiceImpl = config.getConfiguration().getTemplate("securityServiceImplementation.ftl");
+		Template templateServiceImpl = null;
+		if (SQL.equals(config.getPersistenceDatabase())) {
+			templateServiceImpl = config.getConfiguration()
+					.getTemplate(SQL + File.separatorChar + SECURITY_SERVICE_IMPLEMENTATION_TEMPLATE);
+		} else {
+			templateServiceImpl = config.getConfiguration()
+					.getTemplate(NO_SQL + File.separatorChar + SECURITY_SERVICE_IMPLEMENTATION_TEMPLATE);
+		}
+
 		dataModel = new HashMap<String, Object>();
 		File fileServiceImpl = new File(config.getPackageDirectory() + File.separatorChar + "service"
 				+ File.separatorChar + "impl" + File.separatorChar + config.getClazz().getName() + "ServiceImpl.java");

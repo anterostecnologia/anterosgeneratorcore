@@ -2,6 +2,7 @@ package ${packageName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import ${importEntity};
 import ${importRepository};
@@ -16,7 +17,7 @@ import br.com.anteros.persistence.session.repository.impl.GenericSQLRepository;
 public class ${repositoryNameImpl} extends GenericSQLRepository<${entityType}, Long> implements ${repositoryName} {
 
 	@Autowired
-	public ${repositoryNameImpl}(SQLSessionFactory sessionFactory) {
+	public ${repositoryNameImpl}(@Qualifier("sessionFactorySQL")SQLSessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
 

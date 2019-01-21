@@ -4,11 +4,14 @@ import static br.com.anteros.generator.AnterosGenerationConstants.DD_MM_YYYY_HH_
 import static br.com.anteros.generator.AnterosGenerationConstants.ENTITY_TYPE;
 import static br.com.anteros.generator.AnterosGenerationConstants.IMPORT_ENTITY;
 import static br.com.anteros.generator.AnterosGenerationConstants.IMPORT_REPOSITORY;
+import static br.com.anteros.generator.AnterosGenerationConstants.NO_SQL;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.REPOSITORY;
 import static br.com.anteros.generator.AnterosGenerationConstants.REPOSITORY_INTERFACE_TEMPLATE;
+import static br.com.anteros.generator.AnterosGenerationConstants.REPOSITORY_IMPLEMENTATION_TEMPLATE;
 import static br.com.anteros.generator.AnterosGenerationConstants.REPOSITORY_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.REPOSITORY_NAME_IMPL;
+import static br.com.anteros.generator.AnterosGenerationConstants.SQL;
 import static br.com.anteros.generator.AnterosGenerationConstants.TIME;
 
 import java.io.File;
@@ -32,7 +35,14 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 		config.getGenerationLog().log("Generating class repository interface for " + config.getClazz().getName());
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY));
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY + File.separatorChar + "impl"));
-		Template templateServiceInterface = config.getConfiguration().getTemplate(REPOSITORY_INTERFACE_TEMPLATE);
+				
+		Template templateServiceInterface = null;
+		if (SQL.equals(config.getPersistenceDatabase())){
+			templateServiceInterface = config.getConfiguration().getTemplate(SQL + File.separatorChar +REPOSITORY_INTERFACE_TEMPLATE);
+		}
+		else {
+		 templateServiceInterface = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +REPOSITORY_INTERFACE_TEMPLATE);
+		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY_HH_MM_SS);
 
@@ -55,8 +65,15 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 			out.flush();
 			out.close();
 		}
+		
+		Template templateServiceImpl=null;
+		if (SQL.equals(config.getPersistenceDatabase())){
+			templateServiceImpl = config.getConfiguration().getTemplate(SQL + File.separatorChar +REPOSITORY_IMPLEMENTATION_TEMPLATE);
+		}
+		else {
+			templateServiceImpl = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +REPOSITORY_IMPLEMENTATION_TEMPLATE);
+		}
 
-		Template templateServiceImpl = config.getConfiguration().getTemplate("repositoryImplementation.ftl");
 		dataModel = new HashMap<String, Object>();
 		File fileServiceImpl = new File(
 				config.getPackageDirectory() + File.separatorChar + "repository" + File.separatorChar + "impl"

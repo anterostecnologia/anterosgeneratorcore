@@ -1,7 +1,7 @@
 package ${packageName};
 
 import br.com.anteros.security.spring.ResourceSecured;
-import br.com.anteros.security.spring.service.SQLServiceSecured;
+import br.com.anteros.security.spring.sql.service.SQLServiceSecured;
 import ${importEntity};
 
 /**

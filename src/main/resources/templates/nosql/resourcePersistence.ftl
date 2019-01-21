@@ -1,19 +1,26 @@
 package ${packageName};
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.PlatformTransactionManager;
 
+import br.com.anteros.persistence.session.SQLSessionFactory;
 import br.com.anteros.persistence.session.configuration.PackageScanEntity;
 import br.com.anteros.persistence.session.query.ShowSQLType;
-import br.com.anteros.spring.config.AnterosSpringPersistenceConfiguration;
+import br.com.anteros.spring.config.AbstractSQLPersistenceConfiguration;
 import br.com.anteros.spring.config.PooledDataSourceConfiguration;
 import br.com.anteros.spring.config.SQLSessionFactoryConfiguration;
 import br.com.anteros.spring.config.SingleDataSourceConfiguration;
+import br.com.anteros.spring.transaction.AnterosTransactionManager;
 
 @Configuration
 @PropertySource("${propertiesFile}")
-public class PersistenceConfiguration extends AnterosSpringPersistenceConfiguration{
+public class ResourcePersistenceConfiguration extends AbstractSQLPersistenceConfiguration {
 
 	@Value("&&{jdbc.driverClassName}&&")
 	private String driverClass;
@@ -99,6 +106,18 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 	@Value("&&{anteros.use.bean.validation}&&")
 	private Boolean useBeanValidation = true;
 	
+
+	@Autowired
+	@Bean
+	public PlatformTransactionManager txManager(NoSQLSessionFactory sessionFactoryNoSQL) {
+		if (sessionFactoryNoSQL != null) {
+			AnterosNoSQLTransactionManager txManager = new AnterosNoSQLTransactionManager();
+			txManager.setSessionFactory(sessionFactoryNoSQL);
+			return txManager;
+		}
+		return null;
+	}
+	
 	@Override
 	public PooledDataSourceConfiguration getPooledDataSourceConfiguration() {
 		return PooledDataSourceConfiguration.of(driverClass, jdbcUrl, user, password)
@@ -132,6 +151,5 @@ public class PersistenceConfiguration extends AnterosSpringPersistenceConfigurat
 				.useBeanValidation(useBeanValidation)
 				.scriptDDLGeneration(scriptDDLGeneration);
 	}
-
 
 }

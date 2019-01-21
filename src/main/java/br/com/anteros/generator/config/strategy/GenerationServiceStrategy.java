@@ -12,6 +12,8 @@ import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_INTERF
 import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_NAME_IMPL;
 import static br.com.anteros.generator.AnterosGenerationConstants.TIME;
+import static br.com.anteros.generator.AnterosGenerationConstants.SQL;
+import static br.com.anteros.generator.AnterosGenerationConstants.NO_SQL;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,7 +35,13 @@ public class GenerationServiceStrategy implements AnterosGenerationStrategy {
 		config.getGenerationLog().log("Generating class service interface for " + config.getClazz().getName());
 			FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE));
 			FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE + File.separatorChar + "impl"));
-			Template templateServiceInterface = config.getConfiguration().getTemplate(SERVICE_INTERFACE_TEMPLATE);
+			Template templateServiceInterface = null;
+			if (SQL.equals(config.getPersistenceDatabase())){
+				templateServiceInterface = config.getConfiguration().getTemplate(SQL + File.separatorChar +SERVICE_INTERFACE_TEMPLATE);
+			}
+			else {
+			 templateServiceInterface = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +SERVICE_INTERFACE_TEMPLATE);
+			}
 
 			SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY_HH_MM_SS);
 

@@ -44,10 +44,28 @@ public interface AnterosGenerationConfig {
 	
 	public boolean isGenerateExceptionHandler();
 	
+	public String getPersistenceDatabase();
+	
+	public String getSecurityPersistenceDatabase();
+	
+	public String remoteEndPointCheckToken();
+	
 	public void setConfiguration(Configuration configuration);
 	
 	public void setClazz(JavaClass clazz);
 	
 	public List<URL> getClassPathURLs();
+
+	public String getResourceID();
+
+	public String getSecuredPattern();
+
+	public Boolean isUseAnterosOAuth2Server();
+	
+	public String getClientID();
+	
+	public String getClientSecret();
+	
+	public String getResourceVersion();
 
 }
