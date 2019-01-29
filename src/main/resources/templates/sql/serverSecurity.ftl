@@ -61,8 +61,15 @@ public class ServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	http.cors().and()
-		.csrf().disable().authorizeRequests().anyRequest().permitAll();
+		.csrf().disable().authorizeRequests().anyRequest().permitAll();	    	
     }
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		super.configure(web);
+		web.ignoring()
+        .antMatchers(HttpMethod.OPTIONS);
+	}
     
     @Bean(name = "securitySessionFactory")
    	public SQLSessionFactory getSecuritySessionFactory(
