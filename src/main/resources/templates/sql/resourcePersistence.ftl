@@ -20,6 +20,7 @@ import br.com.anteros.spring.transaction.AnterosTransactionManager;
 
 @Configuration
 @PropertySource("${propertiesFile}")
+@EnableTransactionManagement
 public class ResourcePersistenceConfiguration extends AbstractSQLPersistenceConfiguration {
 
 	@Value("&&{jdbc.driverClassName}&&")
