@@ -41,7 +41,7 @@ public class AnterosGeneratorManager {
 	}
 
 	public void generate(AnterosGenerationConfig config, Class<?> baseClassLoader) throws Exception {
-		List<JavaClass> allEntityClasses = getAllEntityClasses(config.isGenerateForAbstractClass(),
+		List<JavaClass> allEntityClasses = getAllEntityClasses(config,config.isGenerateForAbstractClass(),
 				config.getPackageScanEntity(), config.getClassPathURLs());
 		Configuration configuration = new Configuration();
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
@@ -98,7 +98,7 @@ public class AnterosGeneratorManager {
 		}
 	}
 
-	private List<JavaClass> getAllEntityClasses(boolean generateForAbstractClass, String sourcesToScanEntities,
+	private List<JavaClass> getAllEntityClasses(AnterosGenerationConfig config, boolean generateForAbstractClass, String sourcesToScanEntities,
 			List<URL> urls) throws IOException {
 		List<JavaClass> result = new ArrayList<JavaClass>();
 		URLClassLoader urlClassLoader = new URLClassLoader(urls.toArray(new URL[] {}),
@@ -117,6 +117,31 @@ public class AnterosGeneratorManager {
 			if (Modifier.isAbstract(cl.getModifiers()) && !generateForAbstractClass) {
 				continue;
 			}
+			
+			if (config.getIncludeOnlyTheseEntitiesList().size()>0) {
+				int cont=0;
+				for (String includeEntity : config.getIncludeOnlyTheseEntitiesList()) {
+					if (cl.getSimpleName().equals(includeEntity) || cl.getName().equals(includeEntity)) {
+						cont++;
+					}
+				}
+				if (cont==0)
+					continue;
+			}
+			
+			
+			
+			if (config.getExcludeEntitiesList().size()>0) {
+				int cont=0;
+				for (String excludeEntity : config.getExcludeEntitiesList()) {
+					if (cl.getSimpleName().equals(excludeEntity) || cl.getName().equals(excludeEntity)) {
+						cont++;
+					}
+				}
+				if (cont>0)
+					continue;
+			}
+			
 			JavaClass javaClass = docBuilder.getClassByName(cl.getName());
 			if (javaClass != null)
 				result.add(javaClass);

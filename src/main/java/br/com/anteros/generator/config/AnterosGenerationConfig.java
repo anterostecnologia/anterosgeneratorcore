@@ -25,6 +25,10 @@ public interface AnterosGenerationConfig {
 	public String getPropertiesFile();
 
 	public String getPackageScanEntity();
+	
+	public List<String> getIncludeOnlyTheseEntitiesList();
+	
+	public List<String> getExcludeEntitiesList();
 
 	public List<String> getPackageScanComponentsList();
 
