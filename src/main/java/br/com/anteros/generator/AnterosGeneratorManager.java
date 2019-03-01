@@ -19,6 +19,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 
 import br.com.anteros.core.scanner.ClassFilter;
 import br.com.anteros.core.scanner.ClassPathScanner;
+import br.com.anteros.core.utils.ClassUtils;
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import br.com.anteros.generator.freemarker.AnterosFreeMarkerTemplateLoader;
@@ -109,6 +110,11 @@ public class AnterosGeneratorManager {
 		libraryBuilder.appendClassLoader(urlClassLoader);
 		JavaProjectBuilder docBuilder = new JavaProjectBuilder(libraryBuilder);
 
+		for (String includeEntity : config.getIncludeOnlyTheseEntitiesList()) {
+			String packageName = ClassUtils.getPackageName(includeEntity);
+			sourcesToScanEntities = StringUtils.join(sourcesToScanEntities, ";", packageName);
+		}
+		
 		String[] packages = StringUtils.tokenizeToStringArray(sourcesToScanEntities, ", ;");
 		List<Class<?>> scanClasses = ClassPathScanner
 				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
@@ -118,18 +124,18 @@ public class AnterosGeneratorManager {
 				continue;
 			}
 			
-			if (config.getIncludeOnlyTheseEntitiesList().size()>0) {
-				int cont=0;
+			if (config.getIncludeOnlyTheseEntitiesList().size() > 0) {
+				int cont = 0;
 				for (String includeEntity : config.getIncludeOnlyTheseEntitiesList()) {
-					if (cl.getSimpleName().equals(includeEntity) || cl.getName().equals(includeEntity)) {
-						cont++;
-					}
+					if (ClassUtils.getPackageName(cl).equals(ClassUtils.getPackageName(includeEntity))) {						
+						if (!(cl.getSimpleName().equals(includeEntity) || cl.getName().equals(includeEntity))) {
+							cont++;
+						} 				
+					} 
 				}
-				if (cont==0)
+				if (cont > 0)
 					continue;
-			}
-			
-			
+			}						
 			
 			if (config.getExcludeEntitiesList().size()>0) {
 				int cont=0;
