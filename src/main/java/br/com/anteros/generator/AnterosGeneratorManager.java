@@ -152,6 +152,7 @@ public class AnterosGeneratorManager {
 			if (javaClass != null)
 				result.add(javaClass);
 		}
+		urlClassLoader.close();
 		return result;
 	}
 }
