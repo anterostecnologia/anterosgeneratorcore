@@ -88,7 +88,9 @@ public class AnterosGenerationConstants {
 	
 	public static final String SECURED_PATTERN = "securedPattern";
 	
-	public static final String USE_ANTEROS_OAUTH2_SERVER = "useAnterosOAuth2Server";	
+	public static final String USE_ANTEROS_OAUTH2_SERVER = "useAnterosOAuth2Server";
+	
+	public static final String INCLUDE_OAUTH2 = "includeOAuth2";
 
 	public static final String TIME = "time";
 	

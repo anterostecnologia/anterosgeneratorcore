@@ -1,7 +1,7 @@
 package br.com.anteros.generator.config.strategy;
 
-import static br.com.anteros.generator.AnterosGenerationConstants.RESOURCE;
 import static br.com.anteros.generator.AnterosGenerationConstants.APP_WEB_INITIALIZER_TEMPLATE;
+import static br.com.anteros.generator.AnterosGenerationConstants.INCLUDE_OAUTH2;
 import static br.com.anteros.generator.AnterosGenerationConstants.PACKAGE_NAME;
 import static br.com.anteros.generator.AnterosGenerationConstants.USE_ANTEROS_OAUTH2_SERVER;
 
@@ -34,6 +34,7 @@ public class GenerationAppConfigurationStrategy implements AnterosGenerationStra
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + 
 					 ".config");
 			dataModel.put(USE_ANTEROS_OAUTH2_SERVER, config.isUseAnterosOAuth2Server());
+			dataModel.put(INCLUDE_OAUTH2, config.isIncludeOAuth2());
 
 //			dataModel.put(PROJECT_DISPLAY_NAME, config.getProjectDisplayName());
 

@@ -97,10 +97,13 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 				+ File.separatorChar + "ServerSecurityConfiguration.java");
 		if (!serverSecurityFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(serverSecurityFile);
-			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");			
-		
-			String packages = '"'+"br.com.anteros.security.spring"+'"'+","+(SQL.equals(config.getSecurityPersistenceDatabase())?'"'+"br.com.anteros.security.store.sql"+'"':'"'+"br.com.anteros.security.store.mongo"+'"');
-			
+			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
+
+			String packages = '"' + "br.com.anteros.security.spring" + '"' + ","
+					+ (SQL.equals(config.getSecurityPersistenceDatabase())
+							? '"' + "br.com.anteros.security.store.sql" + '"'
+							: '"' + "br.com.anteros.security.store.mongo" + '"');
+
 			dataModel.put(PACKAGE_SCAN_COMPONENTS, packages);
 			dataModel.put(PROPERTIES_FILE, config.getPropertiesFile());
 
@@ -108,36 +111,40 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 			out.flush();
 			out.close();
 		}
+		
+		File resourceServerSecurityFile = null;
 
-		Template templateResourceServerSecurity = config.getConfiguration()
-				.getTemplate(File.separatorChar + RESOURCE_SERVER_SECURITY_TEMPLATE);
+		if (config.isIncludeOAuth2()) {
+			Template templateResourceServerSecurity = config.getConfiguration()
+					.getTemplate(File.separatorChar + RESOURCE_SERVER_SECURITY_TEMPLATE);
 
-		dataModel = new HashMap<String, Object>();
-		File resourceServerSecurityFile = new File(config.getPackageDirectory() + File.separatorChar + "config"
-				+ File.separatorChar + "ResourceServerConfiguration.java");
-		if (!resourceServerSecurityFile.exists()) {
-			out = new AnterosFreeMarkerFileWriter(resourceServerSecurityFile);
-			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
-			dataModel.put(RESOURCE_ID, config.getResourceID());
-			dataModel.put(CLIENT_ID, config.getClientID());
-			dataModel.put(CLIENT_SECRET, config.getClientSecret());
-			dataModel.put(SECURED_PATTERN, config.getSecuredPattern());
-			dataModel.put(REMOTE_TOKEN_CHECK_ENDPOINT, config.remoteEndPointCheckToken());
-			dataModel.put(USE_ANTEROS_OAUTH2_SERVER, config.isUseAnterosOAuth2Server()==true);
+			dataModel = new HashMap<String, Object>();
+			resourceServerSecurityFile = new File(config.getPackageDirectory() + File.separatorChar + "config"
+					+ File.separatorChar + "ResourceServerConfiguration.java");
+			if (!resourceServerSecurityFile.exists()) {
+				out = new AnterosFreeMarkerFileWriter(resourceServerSecurityFile);
+				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
+				dataModel.put(RESOURCE_ID, config.getResourceID());
+				dataModel.put(CLIENT_ID, config.getClientID());
+				dataModel.put(CLIENT_SECRET, config.getClientSecret());
+				dataModel.put(SECURED_PATTERN, config.getSecuredPattern());
+				dataModel.put(REMOTE_TOKEN_CHECK_ENDPOINT, config.remoteEndPointCheckToken());
+				dataModel.put(USE_ANTEROS_OAUTH2_SERVER, config.isUseAnterosOAuth2Server() == true);
 
-			templateResourceServerSecurity.process(dataModel, out);
-			out.flush();
-			out.close();
+				templateResourceServerSecurity.process(dataModel, out);
+				out.flush();
+				out.close();
+			}
 		}
 
-		if (!config.isUseAnterosOAuth2Server()) {
+		if (!config.isUseAnterosOAuth2Server() && config.isIncludeOAuth2()) {
 			Template templateAuthenticationServerSecurity = config.getConfiguration()
 					.getTemplate(File.separatorChar + AUTHENTICATION_SERVER_SECURITY_TEMPLATE);
 
 			dataModel = new HashMap<String, Object>();
 			File authenticationServerFile = new File(config.getPackageDirectory() + File.separatorChar + "config"
 					+ File.separatorChar + "AuthServerOAuth2Configuration.java");
-			if (!resourceServerSecurityFile.exists()) {
+			if (resourceServerSecurityFile!=null && !resourceServerSecurityFile.exists()) {
 				out = new AnterosFreeMarkerFileWriter(authenticationServerFile);
 				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
 				templateAuthenticationServerSecurity.process(dataModel, out);

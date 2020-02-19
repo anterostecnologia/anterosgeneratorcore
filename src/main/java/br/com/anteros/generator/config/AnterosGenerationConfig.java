@@ -35,6 +35,8 @@ public interface AnterosGenerationConfig {
 	public String getSourceDestination();
 
 	public boolean isIncludeSecurity();
+	
+	public boolean isIncludeOAuth2();
 
 	public boolean isGenerateRepository();
 

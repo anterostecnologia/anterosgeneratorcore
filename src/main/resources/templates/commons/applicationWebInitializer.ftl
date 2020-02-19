@@ -11,7 +11,7 @@ public class ApplicationWebInitializer extends AbstractSpringWebAppInitializer{
 
 	@Override
 	public Class<?> oauth2ServerConfigurationClass() {
-	<#if !useAnterosOAuth2Server>	
+	<#if !useAnterosOAuth2Server && includeOAuth2>	
  		return AuthServerOAuth2Config.class;
  	<#else>	
 		return null;
@@ -20,7 +20,11 @@ public class ApplicationWebInitializer extends AbstractSpringWebAppInitializer{
 
 	@Override
 	public Class<?> resourceServerConfigurationClass() {
+	<#if includeOAuth2>
 		return ResourceServerConfiguration.class;
+	<#else>	
+		return null;
+	</#if>		
 	}
 
 	@Override
