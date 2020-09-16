@@ -50,12 +50,12 @@ public class AnterosGenerator {
 		case GENERATION_RESOURCE_PERSISTENCE_CONFIGURATION:
 			generator.strategy = new GenerationResourcePersistenceConfigurationStrategy();
 			break;	
-		case GENERATION_SECURITY_SERVICE:
-			generator.strategy = new GenerationSecurityServiceStrategy();
-			break;
 		case GENERATION_SECURITY_CONFIGURATION:
 			generator.strategy = new GenerationSecurityConfigurationStrategy();
 			break;
+		case GENERATION_SECURITY_SERVICE:
+			generator.strategy = new GenerationSecurityServiceStrategy();
+			break;	
 		case GENERATION_EXCEPTION_HANDLER:
 			generator.strategy = new GenerationExceptionHandlerStrategy();
 			break;

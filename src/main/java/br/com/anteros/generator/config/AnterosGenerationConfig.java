@@ -31,6 +31,8 @@ public interface AnterosGenerationConfig {
 	public List<String> getExcludeEntitiesList();
 
 	public List<String> getPackageScanComponentsList();
+	
+	public List<String> getPackageReplaceNamesList();
 
 	public String getSourceDestination();
 

@@ -42,7 +42,7 @@ public class AnterosGeneratorManager {
 	}
 
 	public void generate(AnterosGenerationConfig config, Class<?> baseClassLoader) throws Exception {
-		List<JavaClass> allEntityClasses = getAllEntityClasses(config,config.isGenerateForAbstractClass(),
+		List<JavaClass> allEntityClasses = getAllEntityClasses(config, config.isGenerateForAbstractClass(),
 				config.getPackageScanEntity(), config.getClassPathURLs());
 		Configuration configuration = new Configuration();
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
@@ -74,33 +74,23 @@ public class AnterosGeneratorManager {
 			config.getGenerationLog().log(jc.getName());
 			config.setClazz(jc);
 			if (config.isIncludeSecurity()) {
-				if (config.isGenerateService()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
-				}
-				if (config.isGenerateController()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE).generate(config);
-				}
-
-				if (config.isGenerateRepository()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
-				}
-
+				AnterosGenerator.create(AnterosGenerator.GENERATION_SECURITY_SERVICE).generate(config);
 			} else {
 				if (config.isGenerateService()) {
 					AnterosGenerator.create(AnterosGenerator.GENERATION_SERVICE).generate(config);
 				}
-				if (config.isGenerateJavaConfiguration()) {
-					AnterosGenerator.create(AnterosGenerator.GENERATION_APP_CONFIGURATION).generate(config);
-					AnterosGenerator.create(AnterosGenerator.GENERATION_MVC_CONFIGURATION).generate(config);
-					AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE_PERSISTENCE_CONFIGURATION)
-							.generate(config);
-				}
+			}
+			if (config.isGenerateController()) {
+				AnterosGenerator.create(AnterosGenerator.GENERATION_RESOURCE).generate(config);
+			}
+			if (config.isGenerateRepository()) {
+				AnterosGenerator.create(AnterosGenerator.GENERATION_REPOSITORY).generate(config);
 			}
 		}
 	}
 
-	private List<JavaClass> getAllEntityClasses(AnterosGenerationConfig config, boolean generateForAbstractClass, String sourcesToScanEntities,
-			List<URL> urls) throws IOException {
+	private List<JavaClass> getAllEntityClasses(AnterosGenerationConfig config, boolean generateForAbstractClass,
+			String sourcesToScanEntities, List<URL> urls) throws IOException {
 		List<JavaClass> result = new ArrayList<JavaClass>();
 		URLClassLoader urlClassLoader = new URLClassLoader(urls.toArray(new URL[] {}),
 				Thread.currentThread().getContextClassLoader());
@@ -114,7 +104,7 @@ public class AnterosGeneratorManager {
 			String packageName = ClassUtils.getPackageName(includeEntity);
 			sourcesToScanEntities = StringUtils.join(sourcesToScanEntities, ";", packageName);
 		}
-		
+
 		String[] packages = StringUtils.tokenizeToStringArray(sourcesToScanEntities, ", ;");
 		List<Class<?>> scanClasses = ClassPathScanner
 				.scanClasses(new ClassFilter().packages(packages).annotation(Entity.class));
@@ -123,31 +113,31 @@ public class AnterosGeneratorManager {
 			if (Modifier.isAbstract(cl.getModifiers()) && !generateForAbstractClass) {
 				continue;
 			}
-			
+
 			if (config.getIncludeOnlyTheseEntitiesList().size() > 0) {
 				int cont = 0;
 				for (String includeEntity : config.getIncludeOnlyTheseEntitiesList()) {
-					if (ClassUtils.getPackageName(cl).equals(ClassUtils.getPackageName(includeEntity))) {						
+					if (ClassUtils.getPackageName(cl).equals(ClassUtils.getPackageName(includeEntity))) {
 						if (!(cl.getSimpleName().equals(includeEntity) || cl.getName().equals(includeEntity))) {
 							cont++;
-						} 				
-					} 
+						}
+					}
 				}
 				if (cont > 0)
 					continue;
-			}						
-			
-			if (config.getExcludeEntitiesList().size()>0) {
-				int cont=0;
+			}
+
+			if (config.getExcludeEntitiesList().size() > 0) {
+				int cont = 0;
 				for (String excludeEntity : config.getExcludeEntitiesList()) {
 					if (cl.getSimpleName().equals(excludeEntity) || cl.getName().equals(excludeEntity)) {
 						cont++;
 					}
 				}
-				if (cont>0)
+				if (cont > 0)
 					continue;
 			}
-			
+
 			JavaClass javaClass = docBuilder.getClassByName(cl.getName());
 			if (javaClass != null)
 				result.add(javaClass);

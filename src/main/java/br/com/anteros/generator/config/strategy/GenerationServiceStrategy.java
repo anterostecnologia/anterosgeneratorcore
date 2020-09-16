@@ -21,10 +21,12 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.generator.AnterosGenerationStrategy;
 import br.com.anteros.generator.config.AnterosGenerationConfig;
 import freemarker.template.Template;
@@ -51,11 +53,21 @@ public class GenerationServiceStrategy implements AnterosGenerationStrategy {
 			Writer out = null;
 
 			Map<String, Object> dataModel = new HashMap<String, Object>();
-			File fileService = new File(config.getPackageDirectory() + File.separatorChar + "service" + File.separatorChar
-					+ config.getClazz().getName() + "Service.java");
+
+			String sourcePackageName = config.getClazz().getPackageName();
+			
+			List<String> names = config.getPackageReplaceNamesList();
+			for (String name : names) {
+				sourcePackageName = StringUtils.replaceAll(sourcePackageName, name, config.getPackageDestination());
+			}				
+			sourcePackageName = StringUtils.replaceAll(sourcePackageName, config.getPackageDestination(), config.getPackageDestination()+'.'+config.getResourceVersion());
+			FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)));
+			File fileService = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "Service.java");
+			
+			
 			if (!fileService.exists()) {
 				out = new FileWriter(fileService);
-				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".service");
+				dataModel.put(PACKAGE_NAME, sourcePackageName);
 				dataModel.put(SERVICE_NAME, serviceName);
 				dataModel.put(ENTITY_TYPE, entityType);
 				dataModel.put(IMPORT_ENTITY, fullEntityName);
@@ -64,16 +76,26 @@ public class GenerationServiceStrategy implements AnterosGenerationStrategy {
 				out.flush();
 				out.close();
 			}
+			
+			Template templateServiceImpl = null;
+			if (SQL.equals(config.getPersistenceDatabase())){
+				templateServiceImpl = config.getConfiguration().getTemplate(SQL + File.separatorChar +SERVICE_IMPLEMENTATION_TEMPLATE);
+			}
+			else {
+				templateServiceImpl = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +SERVICE_IMPLEMENTATION_TEMPLATE);
+			}
 
-			Template templateServiceImpl = config.getConfiguration().getTemplate(SERVICE_IMPLEMENTATION_TEMPLATE);
+			
 			dataModel = new HashMap<String, Object>();
-			File fileServiceImpl = new File(config.getPackageDirectory() + File.separatorChar + "service" + File.separatorChar + "impl"
-					+ File.separatorChar + config.getClazz().getName() + "ServiceImpl.java");
+			
+			FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)));
+			File fileServiceImpl = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "ServiceImpl.java");
+			
 			if (!fileServiceImpl.exists()) {
 				out = new FileWriter(fileServiceImpl);
-				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".service.impl");
+				dataModel.put(PACKAGE_NAME, sourcePackageName);
 				dataModel.put(IMPORT_ENTITY, fullEntityName);
-				dataModel.put(IMPORT_SERVICE, config.getPackageDestination() + ".service." + config.getClazz().getName() + "Service");
+				dataModel.put(IMPORT_SERVICE, sourcePackageName + "." + config.getClazz().getName() + "Service");
 				dataModel.put(SERVICE_NAME_IMPL, serviceName + "Impl");
 				dataModel.put(INTERFACE_SERVICE, serviceName);
 				dataModel.put(ENTITY_TYPE, entityType);

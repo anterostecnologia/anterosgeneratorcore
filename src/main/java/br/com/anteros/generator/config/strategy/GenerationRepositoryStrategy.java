@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -52,11 +53,23 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 		Writer out = null;
 
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		File fileService = new File(config.getPackageDirectory() + File.separatorChar + "repository"
-				+ File.separatorChar + config.getClazz().getName() + "Repository.java");
+		
+		String sourcePackageName = config.getClazz().getPackageName();
+		
+		List<String> names = config.getPackageReplaceNamesList();
+		for (String name : names) {
+			sourcePackageName = StringUtils.replaceAll(sourcePackageName, name, config.getPackageDestination());
+		}				
+		sourcePackageName = StringUtils.replaceAll(sourcePackageName, config.getPackageDestination(), config.getPackageDestination()+'.'+config.getResourceVersion());	
+		
+		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)));
+		
+		File fileService = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "Repository.java");
+		
+		
 		if (!fileService.exists()) {
 			out = new FileWriter(fileService);
-			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".repository");
+			dataModel.put(PACKAGE_NAME, sourcePackageName);
 			dataModel.put(REPOSITORY_NAME, repositoryName);
 			dataModel.put(ENTITY_TYPE, entityType);
 			dataModel.put(IMPORT_ENTITY, fullEntityName);
@@ -74,16 +87,19 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 			templateServiceImpl = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +REPOSITORY_IMPLEMENTATION_TEMPLATE);
 		}
 
+
 		dataModel = new HashMap<String, Object>();
-		File fileServiceImpl = new File(
-				config.getPackageDirectory() + File.separatorChar + "repository" + File.separatorChar + "impl"
-						+ File.separatorChar + config.getClazz().getName() + "RepositoryImpl.java");
+		
+		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar));
+		
+		File fileServiceImpl = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "RepositoryImpl.java");
+		
 		if (!fileServiceImpl.exists()) {
 			out = new FileWriter(fileServiceImpl);
-			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".repository.impl");
+			dataModel.put(PACKAGE_NAME, sourcePackageName);
 			dataModel.put(IMPORT_ENTITY, fullEntityName);
 			dataModel.put(IMPORT_REPOSITORY,
-					config.getPackageDestination() + ".repository." + config.getClazz().getName() + "Repository");
+					sourcePackageName +"."+ config.getClazz().getName() + "Repository");
 			dataModel.put(REPOSITORY, StringUtils.uncapitalize(repositoryName));
 			dataModel.put(REPOSITORY_NAME_IMPL, repositoryName + "Impl");
 			dataModel.put(REPOSITORY_NAME, repositoryName);
