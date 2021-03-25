@@ -24,20 +24,20 @@ public class GenerationExceptionHandlerStrategy implements AnterosGenerationStra
 	@Override
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating error handler");
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), RESOURCE + File.separatorChar + "handler"));
+		FileUtils.forceMkdir(new File(config.getPackageDirectory(), RESOURCE + File.pathSeparator + "handler"));
 		
 		Template templateExceptionHandler = null;
 		AnterosFreeMarkerFileWriter out = null;		
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templateExceptionHandler = config.getConfiguration().getTemplate(SQL + File.separatorChar +EXCEPTION_HANDLER_TEMPLATE);
+			templateExceptionHandler = config.getConfiguration().getTemplate(SQL + File.pathSeparator +EXCEPTION_HANDLER_TEMPLATE);
 		}
 		else {
-			templateExceptionHandler = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +EXCEPTION_HANDLER_TEMPLATE);
+			templateExceptionHandler = config.getConfiguration().getTemplate(NO_SQL+ File.pathSeparator +EXCEPTION_HANDLER_TEMPLATE);
 		}
 		
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		File exceptionHandlerFile = new File(config.getPackageDirectory() + File.separatorChar + RESOURCE + File.separatorChar
-				+ "handler" + File.separatorChar + "MvcExceptionHandler.java");
+		File exceptionHandlerFile = new File(config.getPackageDirectory() + File.pathSeparator + RESOURCE + File.pathSeparator
+				+ "handler" + File.pathSeparator + "MvcExceptionHandler.java");
 		if (!exceptionHandlerFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(exceptionHandlerFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + "." 

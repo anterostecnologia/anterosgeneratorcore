@@ -35,14 +35,14 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating class repository interface for " + config.getClazz().getName());
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY));
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY + File.separatorChar + "impl"));
+		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY + File.pathSeparator + "impl"));
 				
 		Template templateServiceInterface = null;
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templateServiceInterface = config.getConfiguration().getTemplate(SQL + File.separatorChar +REPOSITORY_INTERFACE_TEMPLATE);
+			templateServiceInterface = config.getConfiguration().getTemplate(SQL + File.pathSeparator +REPOSITORY_INTERFACE_TEMPLATE);
 		}
 		else {
-		 templateServiceInterface = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +REPOSITORY_INTERFACE_TEMPLATE);
+		 templateServiceInterface = config.getConfiguration().getTemplate(NO_SQL+ File.pathSeparator +REPOSITORY_INTERFACE_TEMPLATE);
 		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY_HH_MM_SS);
@@ -62,9 +62,9 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 		}				
 		sourcePackageName = StringUtils.replaceAll(sourcePackageName, config.getPackageDestination(), config.getPackageDestination()+'.'+config.getResourceVersion());	
 		
-		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)));
+		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)));
 		
-		File fileService = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "Repository.java");
+		File fileService = new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)+File.pathSeparator+ config.getClazz().getName() + "Repository.java");
 		
 		
 		if (!fileService.exists()) {
@@ -81,18 +81,18 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 		
 		Template templateServiceImpl=null;
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templateServiceImpl = config.getConfiguration().getTemplate(SQL + File.separatorChar +REPOSITORY_IMPLEMENTATION_TEMPLATE);
+			templateServiceImpl = config.getConfiguration().getTemplate(SQL + File.pathSeparator +REPOSITORY_IMPLEMENTATION_TEMPLATE);
 		}
 		else {
-			templateServiceImpl = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +REPOSITORY_IMPLEMENTATION_TEMPLATE);
+			templateServiceImpl = config.getConfiguration().getTemplate(NO_SQL+ File.pathSeparator +REPOSITORY_IMPLEMENTATION_TEMPLATE);
 		}
 
 
 		dataModel = new HashMap<String, Object>();
 		
-		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar));
+		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)+File.pathSeparator));
 		
-		File fileServiceImpl = new File(config.getSourceDestination()+ File.separatorChar + sourcePackageName.replace('.', File.separatorChar)+File.separatorChar+ config.getClazz().getName() + "RepositoryImpl.java");
+		File fileServiceImpl = new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)+File.pathSeparator+ config.getClazz().getName() + "RepositoryImpl.java");
 		
 		if (!fileServiceImpl.exists()) {
 			out = new FileWriter(fileServiceImpl);

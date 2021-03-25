@@ -44,7 +44,7 @@ public class AnterosGeneratorManager {
 	public void generate(AnterosGenerationConfig config, Class<?> baseClassLoader) throws Exception {
 		List<JavaClass> allEntityClasses = getAllEntityClasses(config, config.isGenerateForAbstractClass(),
 				config.getPackageScanEntity(), config.getClassPathURLs());
-		Configuration configuration = new Configuration();
+		Configuration configuration = new Configuration();		
 		configuration.setTemplateLoader(new AnterosFreeMarkerTemplateLoader(baseClassLoader, TEMPLATES));
 		FileUtils.forceMkdir(new File(config.getPackageDirectory()));
 		config.setConfiguration(configuration);

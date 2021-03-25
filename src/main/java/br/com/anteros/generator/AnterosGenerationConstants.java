@@ -10,7 +10,7 @@ public class AnterosGenerationConstants {
 
 	public static final String BASE_PATH_API = "basePathApi";
 
-	public static final String LICENSE_URL_API = "licenseUrlApi";
+	public static final String LICENSE_URL_API = "licenseUrlApi"; 
 
 	public static final String LICENSE_API = "licenseApi";
 

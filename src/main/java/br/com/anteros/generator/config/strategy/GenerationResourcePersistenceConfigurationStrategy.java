@@ -29,16 +29,16 @@ public class GenerationResourcePersistenceConfigurationStrategy implements Anter
 
 		Template templatePersistence = null;
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templatePersistence = config.getConfiguration().getTemplate(SQL + File.separatorChar +RESOURCE_PERSISTENCE_CONFIGURATION_TEMPLATE);
+			templatePersistence = config.getConfiguration().getTemplate(SQL + File.pathSeparator +RESOURCE_PERSISTENCE_CONFIGURATION_TEMPLATE);
 		}
 		else {
-		 templatePersistence = config.getConfiguration().getTemplate(NO_SQL+ File.separatorChar +RESOURCE_PERSISTENCE_CONFIGURATION_TEMPLATE);
+		 templatePersistence = config.getConfiguration().getTemplate(NO_SQL+ File.pathSeparator +RESOURCE_PERSISTENCE_CONFIGURATION_TEMPLATE);
 		}
 		
 		
 		dataModel = new HashMap<String, Object>();
-		File persistenceFile = new File(config.getPackageDirectory() + File.separatorChar + "config"
-				+ File.separatorChar + "ResourcePersistenceConfiguration.java");
+		File persistenceFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
+				+ File.pathSeparator + "ResourcePersistenceConfiguration.java");
 		if (!persistenceFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(persistenceFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
