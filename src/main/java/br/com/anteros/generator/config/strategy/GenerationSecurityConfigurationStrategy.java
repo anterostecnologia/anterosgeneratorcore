@@ -38,8 +38,8 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 		AnterosFreeMarkerFileWriter out = null;
 		Template templateGlobalMethod = config.getConfiguration().getTemplate(METHOD_SECURITY_CONFIGURATION_TEMPLATE);
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		File globalMethodFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
-				+ File.pathSeparator + "MethodSecurityConfiguration.java");
+		File globalMethodFile = new File(config.getPackageDirectory() + File.separator + "config"
+				+ File.separator + "MethodSecurityConfiguration.java");
 		if (!globalMethodFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(globalMethodFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
@@ -49,7 +49,7 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 		}
 
 		Template templateEncoders = config.getConfiguration().getTemplate(ENCODERS_TEMPLATE);
-		File encodersFile = new File(config.getPackageDirectory() + File.pathSeparator + "config" + File.pathSeparator
+		File encodersFile = new File(config.getPackageDirectory() + File.separator + "config" + File.separator
 				+ "EncodersConfiguration.java");
 		if (!encodersFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(encodersFile);
@@ -63,15 +63,15 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 
 		if (SQL.equals(config.getSecurityPersistenceDatabase())) {
 			templatePersistence = config.getConfiguration()
-					.getTemplate(SQL + File.pathSeparator + SECURITY_PERSISTENCE_TEMPLATE);
+					.getTemplate(SQL + File.separator + SECURITY_PERSISTENCE_TEMPLATE);
 		} else {
 			templatePersistence = config.getConfiguration()
-					.getTemplate(NO_SQL + File.pathSeparator + SECURITY_PERSISTENCE_TEMPLATE);
+					.getTemplate(NO_SQL + File.separator + SECURITY_PERSISTENCE_TEMPLATE);
 		}
 
 		dataModel = new HashMap<String, Object>();
-		File persistenceFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
-				+ File.pathSeparator + "SecurityPersistenceConfiguration.java");
+		File persistenceFile = new File(config.getPackageDirectory() + File.separator + "config"
+				+ File.separator + "SecurityPersistenceConfiguration.java");
 		if (!persistenceFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(persistenceFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
@@ -86,15 +86,15 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 
 		if (SQL.equals(config.getSecurityPersistenceDatabase())) {
 			templateServerSecurity = config.getConfiguration()
-					.getTemplate(SQL + File.pathSeparator + SERVER_SECURITY_TEMPLATE);
+					.getTemplate(SQL + File.separator + SERVER_SECURITY_TEMPLATE);
 		} else {
 			templateServerSecurity = config.getConfiguration()
-					.getTemplate(NO_SQL + File.pathSeparator + SERVER_SECURITY_TEMPLATE);
+					.getTemplate(NO_SQL + File.separator + SERVER_SECURITY_TEMPLATE);
 		}
 
 		dataModel = new HashMap<String, Object>();
-		File serverSecurityFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
-				+ File.pathSeparator + "ServerSecurityConfiguration.java");
+		File serverSecurityFile = new File(config.getPackageDirectory() + File.separator + "config"
+				+ File.separator + "ServerSecurityConfiguration.java");
 		if (!serverSecurityFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(serverSecurityFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
@@ -116,11 +116,11 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 
 		if (config.isIncludeOAuth2()) {
 			Template templateResourceServerSecurity = config.getConfiguration()
-					.getTemplate(File.pathSeparator + RESOURCE_SERVER_SECURITY_TEMPLATE);
+					.getTemplate(File.separator + RESOURCE_SERVER_SECURITY_TEMPLATE);
 
 			dataModel = new HashMap<String, Object>();
-			resourceServerSecurityFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
-					+ File.pathSeparator + "ResourceServerConfiguration.java");
+			resourceServerSecurityFile = new File(config.getPackageDirectory() + File.separator + "config"
+					+ File.separator + "ResourceServerConfiguration.java");
 			if (!resourceServerSecurityFile.exists()) {
 				out = new AnterosFreeMarkerFileWriter(resourceServerSecurityFile);
 				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");
@@ -139,11 +139,11 @@ public class GenerationSecurityConfigurationStrategy implements AnterosGeneratio
 
 		if (!config.isUseAnterosOAuth2Server() && config.isIncludeOAuth2()) {
 			Template templateAuthenticationServerSecurity = config.getConfiguration()
-					.getTemplate(File.pathSeparator + AUTHENTICATION_SERVER_SECURITY_TEMPLATE);
+					.getTemplate(File.separator + AUTHENTICATION_SERVER_SECURITY_TEMPLATE);
 
 			dataModel = new HashMap<String, Object>();
-			File authenticationServerFile = new File(config.getPackageDirectory() + File.pathSeparator + "config"
-					+ File.pathSeparator + "AuthServerOAuth2Configuration.java");
+			File authenticationServerFile = new File(config.getPackageDirectory() + File.separator + "config"
+					+ File.separator + "AuthServerOAuth2Configuration.java");
 			if (resourceServerSecurityFile!=null && !resourceServerSecurityFile.exists()) {
 				out = new AnterosFreeMarkerFileWriter(authenticationServerFile);
 				dataModel.put(PACKAGE_NAME, config.getPackageDestination() + ".config");

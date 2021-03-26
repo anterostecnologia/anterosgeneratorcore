@@ -21,14 +21,14 @@ public class GenerationAppConfigurationStrategy implements AnterosGenerationStra
 	@Override
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating app initializer");
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), File.pathSeparator + "config"));
+		FileUtils.forceMkdir(new File(config.getPackageDirectory(), File.separator + "config"));
 		
 		Template templateAppHandler = config.getConfiguration().getTemplate(APP_WEB_INITIALIZER_TEMPLATE);
 		AnterosFreeMarkerFileWriter out = null;
 		
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		File appFile = new File(config.getPackageDirectory() + File.pathSeparator
-				+ "config" + File.pathSeparator + "ApplicationWebInitializer.java");
+		File appFile = new File(config.getPackageDirectory() + File.separator
+				+ "config" + File.separator + "ApplicationWebInitializer.java");
 		if (!appFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(appFile);
 			dataModel.put(PACKAGE_NAME, config.getPackageDestination() + 

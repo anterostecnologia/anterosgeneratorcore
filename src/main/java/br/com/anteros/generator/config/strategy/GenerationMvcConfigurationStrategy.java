@@ -28,14 +28,14 @@ public class GenerationMvcConfigurationStrategy implements AnterosGenerationStra
 
 		Template templateMvc = null;
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templateMvc = config.getConfiguration().getTemplate(SQL + File.pathSeparator +MVC_CONFIGURATION_TEMPLATE);
+			templateMvc = config.getConfiguration().getTemplate(SQL + File.separator +MVC_CONFIGURATION_TEMPLATE);
 		}
 		else {
-			templateMvc = config.getConfiguration().getTemplate(NO_SQL+ File.pathSeparator +MVC_CONFIGURATION_TEMPLATE);
+			templateMvc = config.getConfiguration().getTemplate(NO_SQL+ File.separator +MVC_CONFIGURATION_TEMPLATE);
 		}
 		
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		File mvcFile = new File(config.getPackageDirectory() + File.pathSeparator + "config" + File.pathSeparator
+		File mvcFile = new File(config.getPackageDirectory() + File.separator + "config" + File.separator
 				+ "ServerMvcConfiguration.java");
 		if (!mvcFile.exists()) {
 			out = new AnterosFreeMarkerFileWriter(mvcFile);

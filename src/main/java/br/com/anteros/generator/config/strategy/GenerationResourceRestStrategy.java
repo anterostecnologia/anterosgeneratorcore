@@ -35,15 +35,15 @@ public class GenerationResourceRestStrategy implements AnterosGenerationStrategy
 
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating class resource rest for " + config.getClazz().getName());
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), RESOURCE+File.pathSeparator+config.getResourceVersion()));
+		FileUtils.forceMkdir(new File(config.getPackageDirectory(), RESOURCE+File.separator+config.getResourceVersion()));
 
 		Template templateServiceInterface = null;
 		if (SQL.equals(config.getPersistenceDatabase())) {
 			templateServiceInterface = config.getConfiguration()
-					.getTemplate(SQL + File.pathSeparator + RESOURCE_REST_TEMPLATE);
+					.getTemplate(SQL + File.separator + RESOURCE_REST_TEMPLATE);
 		} else {
 			templateServiceInterface = config.getConfiguration()
-					.getTemplate(NO_SQL + File.pathSeparator + RESOURCE_REST_TEMPLATE);
+					.getTemplate(NO_SQL + File.separator + RESOURCE_REST_TEMPLATE);
 		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY_HH_MM_SS);
@@ -65,8 +65,8 @@ public class GenerationResourceRestStrategy implements AnterosGenerationStrategy
 		sourcePackageName = StringUtils.replaceAll(sourcePackageName, config.getPackageDestination(), config.getPackageDestination()+'.'+config.getResourceVersion());	
 
 		
-		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)));
-		File fileService = new File(config.getSourceDestination()+ File.pathSeparator + sourcePackageName.replace('.', File.pathSeparatorChar)+ File.pathSeparator+ config.getClazz().getName() + "Resource.java");
+		FileUtils.forceMkdir(new File(config.getSourceDestination()+ File.separator + sourcePackageName.replace('.', File.separatorChar)));
+		File fileService = new File(config.getSourceDestination()+ File.separator + sourcePackageName.replace('.', File.separatorChar)+ File.separator+ config.getClazz().getName() + "Resource.java");
 
 		if (!fileService.exists()) {
 			out = new FileWriter(fileService);
