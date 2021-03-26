@@ -9,6 +9,8 @@ import static br.com.anteros.generator.AnterosGenerationConstants.SERVICE_INTERF
 import static br.com.anteros.generator.AnterosGenerationConstants.SQL;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,12 +25,13 @@ public class GenerationMvcConfigurationStrategy implements AnterosGenerationStra
 
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating MVC configuration");
+		
 		FileUtils.forceMkdir(new File(config.getPackageDirectory(), "config"));
 		AnterosFreeMarkerFileWriter out = null;
 
 		Template templateMvc = null;
 		if (SQL.equals(config.getPersistenceDatabase())){
-			templateMvc = config.getConfiguration().getTemplate(SQL + File.separator +MVC_CONFIGURATION_TEMPLATE);
+			templateMvc = config.getConfiguration().getTemplate(SQL+File.separator+MVC_CONFIGURATION_TEMPLATE);
 		}
 		else {
 			templateMvc = config.getConfiguration().getTemplate(NO_SQL+ File.separator +MVC_CONFIGURATION_TEMPLATE);

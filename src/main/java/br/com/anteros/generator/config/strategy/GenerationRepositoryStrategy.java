@@ -34,8 +34,6 @@ public class GenerationRepositoryStrategy implements AnterosGenerationStrategy {
 
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating class repository interface for " + config.getClazz().getName());
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY));
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), REPOSITORY + File.separator + "impl"));
 				
 		Template templateServiceInterface = null;
 		if (SQL.equals(config.getPersistenceDatabase())){

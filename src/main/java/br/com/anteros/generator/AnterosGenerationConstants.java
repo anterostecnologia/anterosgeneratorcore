@@ -3,7 +3,7 @@ package br.com.anteros.generator;
 public class AnterosGenerationConstants {
 	
 	
-	public static final String APP_WEB_INITIALIZER_TEMPLATE = "commons/applicationWebInitializer.ftl";
+	public static final String APP_WEB_INITIALIZER_TEMPLATE = "commons\\applicationWebInitializer.ftl";
 	
 
 	public static final String MVC_CONFIGURATION_TEMPLATE = "serverMvc.ftl";

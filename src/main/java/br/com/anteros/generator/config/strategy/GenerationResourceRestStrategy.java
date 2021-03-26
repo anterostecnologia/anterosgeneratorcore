@@ -35,8 +35,6 @@ public class GenerationResourceRestStrategy implements AnterosGenerationStrategy
 
 	public void generate(AnterosGenerationConfig config) throws Exception {
 		config.getGenerationLog().log("Generating class resource rest for " + config.getClazz().getName());
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), RESOURCE+File.separator+config.getResourceVersion()));
-
 		Template templateServiceInterface = null;
 		if (SQL.equals(config.getPersistenceDatabase())) {
 			templateServiceInterface = config.getConfiguration()

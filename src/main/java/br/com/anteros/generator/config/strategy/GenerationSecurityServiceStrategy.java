@@ -39,8 +39,6 @@ public class GenerationSecurityServiceStrategy implements AnterosGenerationStrat
 	public void generate(AnterosGenerationConfig config) throws Exception {
 
 		config.getGenerationLog().log("Generating class security service interface for " + config.getClazz().getName());
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE));
-		FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE + File.separator + "impl"));
 
 		Template templateServiceInterface = null;
 		if (SQL.equals(config.getPersistenceDatabase())) {

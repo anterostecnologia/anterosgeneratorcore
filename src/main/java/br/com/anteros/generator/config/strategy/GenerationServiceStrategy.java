@@ -35,8 +35,6 @@ public class GenerationServiceStrategy implements AnterosGenerationStrategy {
 
 	public void generate(AnterosGenerationConfig config) throws Exception { 
 		config.getGenerationLog().log("Generating class service interface for " + config.getClazz().getName());
-			FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE));
-			FileUtils.forceMkdir(new File(config.getPackageDirectory(), SERVICE + File.separator + "impl"));
 			Template templateServiceInterface = null;
 			if (SQL.equals(config.getPersistenceDatabase())){
 				templateServiceInterface = config.getConfiguration().getTemplate(SQL + File.separator +SERVICE_INTERFACE_TEMPLATE);
